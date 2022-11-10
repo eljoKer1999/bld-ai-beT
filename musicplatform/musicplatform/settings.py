@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 import os
+from celery.schedules import crontab
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -46,7 +47,6 @@ INSTALLED_APPS = [
     'authentication',
     'knox',
     'django_filters'
-    
 ]
 
 MIDDLEWARE = [
@@ -143,4 +143,22 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',),
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 10
+}
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = os.environ.get('EMAIL_HOST')
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER=os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD=os.environ.get('EMAIL_HOST_PASSWORD')
+CELERY_CONF_BROKER_URL = os.environ.get('CELERY_CONF_BROKER_URL')
+CELERY_CONF_RESULT_BACKEND = os.environ.get('CELERY_CONF_RESULT_BACKEND')
+DEFAULT_FROM_EMAIL = 'ahmedmohamedkamel06@gmail.com'
+
+CELERY_CONF_BEAT_SCHEDULE = {
+    'add-every-24-hours': {
+        'task': 'tasks.album_checking',
+        'schedule': crontab(minute= 0, hour= '*/24')
+    },
 }

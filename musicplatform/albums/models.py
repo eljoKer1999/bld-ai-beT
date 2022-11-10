@@ -5,6 +5,8 @@ from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
 from django.core.exceptions import ValidationError
 from django import forms
+from albums.tasks import congratulation_mail
+from celery.schedules import crontab
 import os
 
 class Album(models.Model):
@@ -21,6 +23,10 @@ class Album(models.Model):
     def __str__(self):
         return "Album Name is:" + self.name
 
+    def save(self, *args , **kwargs):
+        congratulation_mail.delay(self.artist.user.id, self.name, self.release_date, self.cost)
+        super(Album, self).save(*args, **kwargs)
+        
     class Meta:
         db_table = 'albums'
         ordering = ['creation_date']
