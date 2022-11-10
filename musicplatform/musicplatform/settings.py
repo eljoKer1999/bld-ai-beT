@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'users',
     'authentication',
     'knox',
+    'django_filters'
     
 ]
 
@@ -137,4 +138,9 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 
-
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES":("knox.auth.TokenAuthentication",),
+    'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',),
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 10
+}
