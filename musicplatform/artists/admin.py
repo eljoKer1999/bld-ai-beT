@@ -2,7 +2,6 @@ from django.contrib import admin
 from artists.models import Artist
 from albums.models import Album
 
-
 class albumAdmin(admin.StackedInline):
     model = Album
     extra = 1 

@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Count
 
 class Artist(models.Model):
     stageName = models.CharField(unique=True, blank=False, max_length=70, null=False)
