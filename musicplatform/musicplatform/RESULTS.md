@@ -84,7 +84,7 @@ Output : 2
 Q1) 
 - dic = dict()
 - for albums in Album.objects.select_related('Artist'):
--     dic.setdefault(albums.Artist.stageName,[]).append(albums.name) 
+-       dic.setdefault(albums.Artist.stageName,[]).append(albums.name) 
 - print(dic)
 
 
